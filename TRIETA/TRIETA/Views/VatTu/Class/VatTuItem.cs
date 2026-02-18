@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Trita.Views.VatTu
 {
@@ -6,9 +8,11 @@ namespace Trita.Views.VatTu
     {
         public string Ten { get; set; }
         public string DonVi { get; set; }
-        public double KhoiLuongTong { get; set; }
 
-        // ❗ KHÔNG DÙNG new()
+        public double KhoiLuongTong => DanhSachLo != null
+            ? DanhSachLo.Sum(lo => lo.KhoiLuong)
+            : 0;
+
         public List<LoVatTu> DanhSachLo { get; set; }
 
         public VatTuItem()

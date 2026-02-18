@@ -342,7 +342,7 @@
                             </Border>
                         </Grid>
 
-                        <!-- Khối lượng -->
+                        <!-- Khối lượng tổng (auto, read-only) -->
                         <Grid Margin="0,8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="160"/>
@@ -354,12 +354,12 @@
                                     CornerRadius="20"
                                     Height="35"
                                     Padding="15,0">
-                                <TextBlock Text="Khối lượng" 
+                                <TextBlock Text="Khối lượng lô" 
                                            VerticalAlignment="Center"
                                            FontWeight="Bold"/>
                             </Border>
                             <Border Grid.Column="1" 
-                                    Background="White"
+                                    Background="#F0F0F0"
                                     BorderBrush="#CCCCCC"
                                     BorderThickness="1"
                                     CornerRadius="20"
@@ -369,7 +369,10 @@
                                 <TextBox x:Name="KhoiLuongTextBox"
                                          Background="Transparent"
                                          BorderThickness="0"
-                                         VerticalContentAlignment="Center"/>
+                                         VerticalContentAlignment="Center"
+                                         IsReadOnly="True"
+                                         FontStyle="Italic"
+                                         ToolTip="Tổng khối lượng được tính tự động từ bảng bên dưới"/>
                             </Border>
                         </Grid>
 
@@ -665,6 +668,95 @@
                             </Grid>
                         </StackPanel>
 
+                        <!-- ===== BẢNG CHI TIẾT VẬT TƯ TRONG LÔ ===== -->
+                        <TextBlock Text="Chi tiết vật tư trong lô:" 
+                                   FontWeight="Bold" 
+                                   FontSize="13"
+                                   Margin="0,20,0,8"/>
+
+                        <!-- Header bảng -->
+                        <Border Background="#D0D8E8"
+                                BorderBrush="#AABBCC"
+                                BorderThickness="1"
+                                CornerRadius="8,8,0,0">
+                            <Grid Margin="0,6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="STT" FontWeight="Bold" 
+                                           HorizontalAlignment="Center" FontSize="11"/>
+                                <TextBlock Grid.Column="1" Text="Tên vật tư" FontWeight="Bold" 
+                                           HorizontalAlignment="Center" FontSize="11"/>
+                                <TextBlock Grid.Column="2" Text="Đơn vị" FontWeight="Bold" 
+                                           HorizontalAlignment="Center" FontSize="11"/>
+                                <TextBlock Grid.Column="3" Text="Khối lượng" FontWeight="Bold" 
+                                           HorizontalAlignment="Center" FontSize="11"/>
+                                <TextBlock Grid.Column="4" Text="Ghi chú" FontWeight="Bold" 
+                                           HorizontalAlignment="Center" FontSize="11"/>
+                                <TextBlock Grid.Column="5" Text="" FontWeight="Bold" 
+                                           HorizontalAlignment="Center" FontSize="11"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Nội dung bảng (tạo động) -->
+                        <Border BorderBrush="#AABBCC"
+                                BorderThickness="1,0,1,0">
+                            <StackPanel x:Name="BangVatTuPanel"/>
+                        </Border>
+
+                        <!-- Footer bảng: Tổng + Thêm dòng -->
+                        <Border Background="#EEF2F8"
+                                BorderBrush="#AABBCC"
+                                BorderThickness="1"
+                                CornerRadius="0,0,8,8">
+                            <Grid Margin="0,6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                                           Text="Tổng cộng:" 
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Right"
+                                           Margin="0,0,8,0"
+                                           FontSize="11"/>
+                                <TextBlock x:Name="TongKhoiLuongLoTextBlock"
+                                           Grid.Column="3"
+                                           Text="0"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"
+                                           FontSize="11"/>
+                                <Button Grid.Column="5"
+                                        Content="+"
+                                        Width="22" Height="22"
+                                        Background="#4A90D9"
+                                        Foreground="White"
+                                        FontWeight="Bold"
+                                        BorderThickness="0"
+                                        Cursor="Hand"
+                                        Click="ThemDongVatTu_Click">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="#4A90D9" CornerRadius="4">
+                                                <ContentPresenter HorizontalAlignment="Center" 
+                                                                VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
+                        </Border>
+
                     </StackPanel>
 
                 </StackPanel>
@@ -679,13 +771,38 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- CHỨNG CHỈ -->
-            <Border Grid.Row="0" 
+            <!-- PANEL KHI CHỌN VẬT TƯ: BIỂU ĐỒ BAR -->
+            <Border x:Name="PanelBieuDo"
+                    Grid.Row="0" 
                     Background="White" 
                     BorderBrush="Black" 
                     BorderThickness="2" 
                     CornerRadius="20"
-                    Padding="15">
+                    Padding="15"
+                    Visibility="Collapsed">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="TỶ TRỌNG THEO NHÀ CUNG CẤP" 
+                                   FontWeight="Bold" 
+                                   FontSize="13"
+                                   Margin="0,0,0,12"/>
+                        <Canvas x:Name="BieuDoCanvas" 
+                                Height="200"
+                                Background="Transparent"/>
+                        <StackPanel x:Name="ChuThichPanel" Margin="0,8,0,0"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- PANEL KHI CHỌN LÔ: CHỨNG CHỈ -->
+            <Border x:Name="PanelChungChi"
+                    Grid.Row="0" 
+                    Background="White" 
+                    BorderBrush="Black" 
+                    BorderThickness="2" 
+                    CornerRadius="20"
+                    Padding="15"
+                    Visibility="Visible">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <TextBlock Text="CHỨNG CHỈ-BIÊN BẢN-HỢP ĐỒNG" 
