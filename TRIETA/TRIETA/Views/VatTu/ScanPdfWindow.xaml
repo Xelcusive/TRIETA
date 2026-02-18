@@ -1,0 +1,57 @@
+﻿<Window x:Class="Trita.ScanPdfWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Scan and PDF views"
+        Width="1000"
+        Height="700"
+        WindowStartupLocation="CenterOwner"
+        Background="Black">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ===== CỘT TRÁI - DANH SÁCH TRANG ===== -->
+        <Border Grid.Column="0"
+                Background="White"
+                BorderBrush="Black"
+                BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+
+                <!-- Danh sách các trang -->
+                <ScrollViewer Grid.Row="0"
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="PageListPanel">
+                        <!-- Các button trang sẽ được tạo động -->
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Nút thêm trang mới -->
+                <Button Grid.Row="1"
+                        x:Name="AddPageButton"
+                        Content="+"
+                        FontSize="24"
+                        FontWeight="Bold"
+                        Click="AddPageButton_Click"
+                        Cursor="Hand"
+                        Background="White"
+                        BorderBrush="#CCCCCC"
+                        BorderThickness="0,1,0,0"/>
+            </Grid>
+        </Border>
+
+        <!-- ===== VÙNG HIỂN THỊ CHÍNH ===== -->
+        <Border Grid.Column="1"
+                Margin="10"
+                Background="White">
+            <Grid x:Name="MainContentArea">
+                <!-- Nội dung của trang hiện tại sẽ được hiển thị ở đây -->
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

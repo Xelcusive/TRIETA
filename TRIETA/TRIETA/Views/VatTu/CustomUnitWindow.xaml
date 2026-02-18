@@ -1,0 +1,45 @@
+﻿<Window x:Class="Trita.CustomUnitWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Định nghĩa đơn vị"
+        Width="221"
+        Height="160"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        WindowStyle="ToolWindow"
+        Background="White">
+    <Border Margin="44,11,12,22" Padding="15" RenderTransformOrigin="0.277,0.319">
+        <StackPanel Margin="-15,-21,15,-22" RenderTransformOrigin="0.48,0.599">
+            <!-- Dòng nhập liệu -->
+            <StackPanel Margin="0,0,0,15" Height="59">
+                <TextBlock Text="Nhập đơn vị mới" 
+                           FontWeight="SemiBold" 
+                           Margin="0,0,0,8"/>
+                <Border CornerRadius="4" 
+                        BorderBrush="#CCCCCC" 
+                        BorderThickness="1" 
+                        Background="White" 
+                        Padding="8,6">
+                    <TextBox x:Name="UnitTextBox"
+                             BorderThickness="0"
+                             FontSize="13"
+                             VerticalContentAlignment="Center"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Nút OK / Hủy -->
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center">
+                <Button Content="OK" 
+                        Width="50" 
+                        Height="20" 
+                        IsDefault="True" 
+                        Click="Ok_Click"
+                        Background="#B83228"
+                        Foreground="White"
+                        BorderBrush="#B83228"
+                        Cursor="Hand"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

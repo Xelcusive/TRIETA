@@ -1,0 +1,771 @@
+﻿<UserControl x:Class="Trita.Views.VatTu.VatTuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <UserControl.Resources>
+        <!-- Style cho ComboBox trong suốt -->
+        <Style x:Key="TransparentComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter x:Name="ContentSite"
+                                            Content="{TemplateBinding SelectionBoxItem}"
+                                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Left"
+                                            Margin="5,0,0,0"/>
+                            <ToggleButton Grid.Column="1"
+                                        x:Name="ToggleButton"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Focusable="False"
+                                        IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        ClickMode="Press">
+                                <Path x:Name="Arrow"
+                                    Data="M 0 0 L 4 4 L 8 0 Z"
+                                    Fill="#666666"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+                            </ToggleButton>
+                            <Popup x:Name="Popup"
+                                 Placement="Bottom"
+                                 IsOpen="{TemplateBinding IsDropDownOpen}"
+                                 AllowsTransparency="True"
+                                 Focusable="False"
+                                 PopupAnimation="Slide">
+                                <Grid Background="White"
+                                    MinWidth="{TemplateBinding ActualWidth}"
+                                    MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border BorderBrush="#CCCCCC" BorderThickness="1">
+                                        <ScrollViewer>
+                                            <StackPanel IsItemsHost="True"/>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="340"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ===== CỘT TRÁI ===== -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- DANH SÁCH VẬT TƯ -->
+            <Border Grid.Row="0" 
+                    Background="White" 
+                    BorderBrush="Black" 
+                    BorderThickness="2" 
+                    CornerRadius="20"
+                    Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="DANH SÁCH VẬT TƯ" 
+                               FontWeight="Bold" 
+                               FontSize="14"
+                               Margin="0,0,0,10"/>
+
+                    <ScrollViewer Grid.Row="1"
+                                  VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="DanhSachVatTuPanel">
+                            <!-- Danh sách vật tư sẽ được tạo động -->
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <Border Grid.Row="2"
+                            BorderBrush="#CCCCCC" 
+                            BorderThickness="0,1,0,0" 
+                            Margin="0,10,0,10"/>
+
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Button Content="[+]. [Thêm vật tư]"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Foreground="Blue"
+                                Cursor="Hand"
+                                FontStyle="Italic"
+                                Click="ThemVatTu_Click"
+                                Margin="0,0,10,0"/>
+
+                        <Button x:Name="BtnAnHienLo"
+                                Content="[Ẩn lô]"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Foreground="Blue"
+                                Cursor="Hand"
+                                FontStyle="Italic"
+                                Click="AnHienLo_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- TRẠNG THÁI -->
+            <Border Grid.Row="1" 
+                    Background="White" 
+                    BorderBrush="Black" 
+                    BorderThickness="2" 
+                    CornerRadius="20"
+                    Padding="15"
+                    Margin="0,16,0,0">
+                <StackPanel>
+                    <TextBlock Text="Trạng thái" 
+                               FontWeight="Bold" 
+                               FontSize="14"
+                               Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,4">
+                        <TextBlock Text="▶" Margin="0,0,6,0" Foreground="Green" FontSize="10"/>
+                        <TextBlock Text="Đã đủ điều kiện để đưa vật liệu vào sử dụng" 
+                                   TextWrapping="Wrap"
+                                   FontSize="11"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,4">
+                        <TextBlock Text="▶" Margin="0,0,6,0" Foreground="Red" FontSize="10"/>
+                        <TextBlock Text="Chưa đủ điều kiện để đưa vật liệu vào sử dụng" 
+                                   TextWrapping="Wrap"
+                                   FontSize="11"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ===== CỘT GIỮA ===== -->
+        <Border Grid.Column="1" 
+                Background="White" 
+                BorderBrush="Black" 
+                BorderThickness="2" 
+                CornerRadius="20"
+                Margin="16,0"
+                Padding="20">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+
+                    <!-- TIÊU ĐỀ ĐỘNG -->
+                    <TextBlock x:Name="TitleTextBlock"
+                               Text="VẬT TƯ"
+                               FontSize="28"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               Margin="0,10,0,30"/>
+
+                    <!-- FORM TỔNG QUAN VẬT TƯ (khi click vào vật tư) -->
+                    <StackPanel x:Name="FormTongQuanVatTu" Visibility="Collapsed">
+
+                        <!-- Đơn vị -->
+                        <Grid Margin="0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#E6E6E6"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Padding="15,0">
+                                <TextBlock Text="Đơn vị" 
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"/>
+                            </Border>
+                            <Border Grid.Column="1" 
+                                    Background="White"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Margin="10,0,0,0"
+                                    Padding="10,0">
+                                <ComboBox x:Name="DonViComboBox"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          VerticalContentAlignment="Center"
+                                          IsEditable="True"
+                                          SelectionChanged="DonViComboBox_SelectionChanged"/>
+                            </Border>
+                            <Button Grid.Column="2"
+                                    Content="+ Đơn vị mới"
+                                    Height="35"
+                                    Padding="12,0"
+                                    Margin="10,0,0,0"
+                                    Click="ThemDonViMoi_Click"
+                                    Cursor="Hand">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="#E8E8E8"
+                                                BorderBrush="#CCCCCC"
+                                                BorderThickness="1"
+                                                CornerRadius="20">
+                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                            VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+
+                        <!-- Tổng số lô -->
+                        <Grid Margin="0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#E6E6E6"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Padding="15,0">
+                                <TextBlock Text="Tổng số lô" 
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"/>
+                            </Border>
+                            <Border Grid.Column="1" 
+                                    Background="White"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Margin="10,0,0,0"
+                                    Padding="15,0">
+                                <TextBox x:Name="TongSoLoTextBox"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         VerticalContentAlignment="Center"
+                                         IsReadOnly="True"
+                                         FontStyle="Italic"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- Tổng khối lượng -->
+                        <Grid Margin="0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#E6E6E6"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Padding="15,0">
+                                <TextBlock Text="Tổng khối lượng" 
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"/>
+                            </Border>
+                            <Border Grid.Column="1" 
+                                    Background="White"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Margin="10,0,0,0"
+                                    Padding="15,0">
+                                <TextBox x:Name="TongKhoiLuongTextBox"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         VerticalContentAlignment="Center"
+                                         IsReadOnly="True"
+                                         FontStyle="Italic"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- Danh sách đơn vị cung cấp theo lô -->
+                        <TextBlock Text="Đơn vị cung cấp từng lô:" 
+                                   FontWeight="Bold" 
+                                   Margin="0,16,0,8"/>
+                        <StackPanel x:Name="DanhSachDonViCungCapPanel">
+                            <!-- Danh sách sẽ được tạo động -->
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <!-- FORM CHI TIẾT LÔ (khi click vào lô) -->
+                    <StackPanel x:Name="FormChiTietLo" Visibility="Collapsed">
+
+                        <!-- Đơn vị (read-only) -->
+                        <Grid Margin="0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#E6E6E6"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Padding="15,0">
+                                <TextBlock Text="Đơn vị" 
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"/>
+                            </Border>
+                            <Border Grid.Column="1" 
+                                    Background="#F0F0F0"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Margin="10,0,0,0"
+                                    Padding="15,0">
+                                <TextBox x:Name="DonViLoTextBox"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         VerticalContentAlignment="Center"
+                                         FontStyle="Italic"
+                                         IsReadOnly="True"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- Khối lượng -->
+                        <Grid Margin="0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#E6E6E6"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Padding="15,0">
+                                <TextBlock Text="Khối lượng" 
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"/>
+                            </Border>
+                            <Border Grid.Column="1" 
+                                    Background="White"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Margin="10,0,0,0"
+                                    Padding="15,0">
+                                <TextBox x:Name="KhoiLuongTextBox"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         VerticalContentAlignment="Center"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- Ngày nhập hàng -->
+                        <Grid Margin="0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#E6E6E6"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Padding="15,0">
+                                <TextBlock Text="Ngày nhập hàng" 
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"/>
+                            </Border>
+                            <Border Grid.Column="1" 
+                                    Background="White"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Margin="10,0,0,0"
+                                    Padding="8,0">
+                                <DatePicker x:Name="NgayNhapHangPicker"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            VerticalContentAlignment="Center"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- Đơn vị cung cấp -->
+                        <Grid Margin="0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="250"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#E6E6E6"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    MinHeight="35"
+                                    Padding="15,8">
+                                <TextBlock Text="Đơn vị cung cấp" 
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"/>
+                            </Border>
+                            <Border x:Name="DonViCungCapBorder"
+                                    Grid.Column="1" 
+                                    Background="White"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    MinHeight="35"
+                                    Margin="10,0,0,0"
+                                    Padding="15,8">
+                                <TextBox x:Name="DonViCungCapTextBox"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"
+                                         VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- Biên bản giao hàng -->
+                        <Grid Margin="0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#E6E6E6"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Padding="15,0">
+                                <TextBlock Text="Biên bản giao hàng" 
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"/>
+                            </Border>
+                            <Border Grid.Column="1" 
+                                    Background="White"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Margin="10,0,0,0"
+                                    Padding="8,0">
+                                <DatePicker x:Name="BienBanGiaoHangPicker"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            VerticalContentAlignment="Center"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- Chứng chỉ xuất xưởng (CO) -->
+                        <Grid Margin="0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#E6E6E6"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Padding="15,0">
+                                <TextBlock Text="Chứng chỉ CO" 
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"/>
+                            </Border>
+                            <Border Grid.Column="1" 
+                                    Background="White"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Margin="10,0,0,0"
+                                    Padding="8,0">
+                                <DatePicker x:Name="COPicker"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            VerticalContentAlignment="Center"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- Chứng chỉ chất lượng (CQ) -->
+                        <Grid Margin="0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#E6E6E6"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Padding="15,0">
+                                <TextBlock Text="Chứng chỉ CQ" 
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"/>
+                            </Border>
+                            <Border Grid.Column="1" 
+                                    Background="White"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Margin="10,0,0,0"
+                                    Padding="8,0">
+                                <DatePicker x:Name="CQPicker"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            VerticalContentAlignment="Center"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- Thí nghiệm vật liệu -->
+                        <Grid Margin="0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#E6E6E6"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Padding="15,0">
+                                <TextBlock Text="Thí nghiệm vật liệu" 
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"/>
+                            </Border>
+                            <Border Grid.Column="1" 
+                                    Background="White"
+                                    BorderBrush="#CCCCCC"
+                                    BorderThickness="1"
+                                    CornerRadius="20"
+                                    Height="35"
+                                    Margin="10,0,0,0"
+                                    Padding="10,0">
+                                <ComboBox x:Name="ThiNghiemComboBox"
+                                          Style="{StaticResource TransparentComboBoxStyle}"
+                                          VerticalContentAlignment="Center"
+                                          IsEditable="False"
+                                          SelectionChanged="ThiNghiemComboBox_SelectionChanged">
+                                    <ComboBoxItem Content="Không"/>
+                                    <ComboBoxItem Content="Có"/>
+                                </ComboBox>
+                            </Border>
+                        </Grid>
+
+                        <!-- Các trường ẩn khi có thí nghiệm -->
+                        <StackPanel x:Name="ThiNghiemDetailsPanel" Visibility="Collapsed">
+                            <!-- Ngày lấy mẫu -->
+                            <Grid Margin="0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="150"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Background="#E6E6E6"
+                                        BorderBrush="#CCCCCC"
+                                        BorderThickness="1"
+                                        CornerRadius="20"
+                                        Height="35"
+                                        Padding="15,0">
+                                    <TextBlock Text="Ngày lấy mẫu" 
+                                               VerticalAlignment="Center"
+                                               FontWeight="Bold"/>
+                                </Border>
+                                <Border Grid.Column="1" 
+                                        Background="White"
+                                        BorderBrush="#CCCCCC"
+                                        BorderThickness="1"
+                                        CornerRadius="20"
+                                        Height="35"
+                                        Margin="10,0,0,0"
+                                        Padding="8,0">
+                                    <DatePicker x:Name="NgayLayMauPicker"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                VerticalContentAlignment="Center"/>
+                                </Border>
+                            </Grid>
+
+                            <!-- Ngày trả kết quả -->
+                            <Grid Margin="0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="150"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Background="#E6E6E6"
+                                        BorderBrush="#CCCCCC"
+                                        BorderThickness="1"
+                                        CornerRadius="20"
+                                        Height="35"
+                                        Padding="15,0">
+                                    <TextBlock Text="Ngày trả kết quả" 
+                                               VerticalAlignment="Center"
+                                               FontWeight="Bold"/>
+                                </Border>
+                                <Border Grid.Column="1" 
+                                        Background="White"
+                                        BorderBrush="#CCCCCC"
+                                        BorderThickness="1"
+                                        CornerRadius="20"
+                                        Height="35"
+                                        Margin="10,0,0,0"
+                                        Padding="8,0">
+                                    <DatePicker x:Name="NgayTraKetQuaPicker"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                VerticalContentAlignment="Center"/>
+                                </Border>
+                            </Grid>
+
+                            <!-- Nơi thí nghiệm -->
+                            <Grid Margin="0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="250"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Background="#E6E6E6"
+                                        BorderBrush="#CCCCCC"
+                                        BorderThickness="1"
+                                        CornerRadius="20"
+                                        MinHeight="35"
+                                        Padding="15,8">
+                                    <TextBlock Text="Nơi thí nghiệm" 
+                                               VerticalAlignment="Center"
+                                               FontWeight="Bold"/>
+                                </Border>
+                                <Border x:Name="NoiThiNghiemBorder"
+                                        Grid.Column="1" 
+                                        Background="White"
+                                        BorderBrush="#CCCCCC"
+                                        BorderThickness="1"
+                                        CornerRadius="20"
+                                        MinHeight="35"
+                                        Margin="10,0,0,0"
+                                        Padding="15,8">
+                                    <TextBox x:Name="NoiThiNghiemTextBox"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True"
+                                             VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- ===== CỘT PHẢI ===== -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.3*"/>
+                <RowDefinition Height="16"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- CHỨNG CHỈ -->
+            <Border Grid.Row="0" 
+                    Background="White" 
+                    BorderBrush="Black" 
+                    BorderThickness="2" 
+                    CornerRadius="20"
+                    Padding="15">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="CHỨNG CHỈ-BIÊN BẢN-HỢP ĐỒNG" 
+                                   FontWeight="Bold" 
+                                   FontSize="13"
+                                   Margin="0,0,0,12"/>
+
+                        <TextBlock Text="1. Biên bản giao nhận" 
+                                   FontWeight="Bold" 
+                                   Margin="0,6,0,2"/>
+                        <TextBlock Text="[+] Thêm bản scan hoặc pdf"
+                                   Foreground="Blue"
+                                   FontStyle="Italic"
+                                   Cursor="Hand"
+                                   Margin="0,0,0,8"
+                                   MouseDown="ThemCO_Click"/>
+
+                        <TextBlock Text="2. Chứng chỉ xuất xưởng (CO)" 
+                                   FontWeight="Bold" 
+                                   Margin="0,6,0,2"/>
+                        <TextBlock Text="[+] Thêm bản scan hoặc pdf"
+                                   Foreground="Blue"
+                                   FontStyle="Italic"
+                                   Cursor="Hand"
+                                   Margin="0,0,0,8"
+                                   MouseDown="ThemCO_Click"/>
+
+                        <TextBlock Text="3. Chứng chỉ chất lượng (CQ)" 
+                                   FontWeight="Bold" 
+                                   Margin="0,6,0,2"/>
+                        <TextBlock Text="[+] Thêm bản scan hoặc pdf"
+                                   Foreground="Blue"
+                                   FontStyle="Italic"
+                                   Cursor="Hand"
+                                   Margin="0,0,0,8"
+                                   MouseDown="ThemCQ_Click"/>
+
+                        <TextBlock Text="4. Kết quả thí nghiệm" 
+                                   FontWeight="Bold" 
+                                   Margin="0,6,0,2"/>
+                        <TextBlock Text="[+] Thêm bản scan hoặc pdf"
+                                   Foreground="Blue"
+                                   FontStyle="Italic"
+                                   Cursor="Hand"
+                                   Margin="0,0,0,8"
+                                   MouseDown="ThemKetQuaThiNghiem_Click"/>
+
+                        <TextBlock Text="5. Hợp đồng (nếu có)" 
+                                   FontWeight="Bold" 
+                                   Margin="0,6,0,2"/>
+                        <TextBlock Text="[+] Thêm bản scan hoặc pdf"
+                                   Foreground="Blue"
+                                   FontStyle="Italic"
+                                   Cursor="Hand"
+                                   MouseDown="ThemHopDong_Click"/>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- CHECK LIST THEO DÕI TÌNH TRẠNG HỒ SƠ -->
+            <Border Grid.Row="2" 
+                    Background="White" 
+                    BorderBrush="Black" 
+                    BorderThickness="2" 
+                    CornerRadius="20"
+                    Padding="15">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="Theo dõi tình trạng hồ sơ" 
+                                   FontWeight="Bold" 
+                                   FontSize="13"
+                                   Margin="0,0,0,10"/>
+                        <StackPanel x:Name="CheckListPanel">
+                            <!-- Checklist sẽ được tạo động -->
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+
+</UserControl>
