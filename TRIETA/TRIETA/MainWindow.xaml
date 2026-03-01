@@ -11,142 +11,117 @@
         WindowStyle="None"
         Loaded="Window_Loaded">
 
+    <Window.Resources>
+        <!-- Style tab active -->
+        <Style x:Key="TabActive" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="CornerRadius" Value="8,8,0,0"/>
+            <Setter Property="Padding" Value="20,8"/>
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <!-- Style tab inactive -->
+        <Style x:Key="TabInactive" TargetType="Border">
+            <Setter Property="Background" Value="#D0D0D0"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="CornerRadius" Value="8,8,0,0"/>
+            <Setter Property="Padding" Value="20,8"/>
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style x:Key="TabTextActive" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#B83228"/>
+        </Style>
+        <Style x:Key="TabTextInactive" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#444"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
-            <!-- TITLE BAR -->
             <RowDefinition Height="42"/>
-            <!-- TAB BAR -->
             <RowDefinition Height="60"/>
-            <!-- RIBBON TOOLS -->
             <RowDefinition Height="*"/>
-            <!-- CONTENT -->
         </Grid.RowDefinitions>
 
         <!-- ================= TITLE BAR ================= -->
-        <Border Grid.Row="0"
-                Background="#E63C31"
-                MouseDown="TitleBar_MouseDown">
+        <Border Grid.Row="0" Background="#E63C31" MouseDown="TitleBar_MouseDown">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
                 <TextBlock Grid.Column="0"
                            Text="TRITA- [Tên dự án]"
-                           Foreground="White"
-                           FontWeight="Bold"
-                           FontSize="13"
-                           VerticalAlignment="Center"
-                           Margin="12,0,0,0"/>
-
-                <StackPanel Grid.Column="1"
-                            Orientation="Horizontal">
-                    <Button Content="─" 
-                            Width="45" 
-                            Height="32" 
-                            Background="Transparent" 
-                            Foreground="White" 
-                            BorderThickness="0" 
-                            FontSize="16"
-                            Click="Minimize_Click"
-                            Cursor="Hand"/>
-                    <Button Content="□" 
-                            Width="45" 
-                            Height="32" 
-                            Background="Transparent" 
-                            Foreground="White" 
-                            BorderThickness="0" 
-                            FontSize="14"
-                            Click="Maximize_Click"
-                            Cursor="Hand"/>
-                    <Button Content="✕" 
-                            Width="45" 
-                            Height="32" 
-                            Background="#D32F2F" 
-                            Foreground="White" 
-                            BorderThickness="0" 
-                            FontSize="16"
-                            Click="Close_Click"
-                            Cursor="Hand"/>
+                           Foreground="White" FontWeight="Bold" FontSize="13"
+                           VerticalAlignment="Center" Margin="12,0,0,0"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Content="─" Width="45" Height="32" Background="Transparent"
+                            Foreground="White" BorderThickness="0" FontSize="16"
+                            Click="Minimize_Click" Cursor="Hand"/>
+                    <Button Content="□" Width="45" Height="32" Background="Transparent"
+                            Foreground="White" BorderThickness="0" FontSize="14"
+                            Click="Maximize_Click" Cursor="Hand"/>
+                    <Button Content="✕" Width="45" Height="32" Background="#D32F2F"
+                            Foreground="White" BorderThickness="0" FontSize="16"
+                            Click="Close_Click" Cursor="Hand"/>
                 </StackPanel>
             </Grid>
         </Border>
 
         <!-- ================= TAB BAR ================= -->
         <Border Grid.Row="1" Background="#B83228">
-            <StackPanel Orientation="Horizontal"
-                        VerticalAlignment="Bottom"
-                        Margin="8,0,0,0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="8,0,0,0">
 
-                <Border Background="#E0E0E0"
-                        Height="32"
-                        CornerRadius="8,8,0,0"
-                        Padding="20,8"
-                        Margin="2,0">
-                    <TextBlock Text="Thông tin" 
-                               VerticalAlignment="Center"
-                               FontWeight="Medium"/>
+                <Border x:Name="TabThongTin" Style="{StaticResource TabInactive}"
+                        MouseDown="Tab_Click" Tag="ThongTin">
+                    <TextBlock x:Name="TabThongTinText" Text="Thông tin"
+                               Style="{StaticResource TabTextInactive}"/>
                 </Border>
 
-                <Border Background="White"
-                        Height="32"
-                        CornerRadius="8,8,0,0"
-                        Padding="20,8"
-                        Margin="2,0">
-                    <TextBlock Text="Vật tư" 
-                               VerticalAlignment="Center"
-                               FontWeight="Bold"/>
+                <Border x:Name="TabVatTu" Style="{StaticResource TabActive}"
+                        MouseDown="Tab_Click" Tag="VatTu">
+                    <TextBlock x:Name="TabVatTuText" Text="Vật tư"
+                               Style="{StaticResource TabTextActive}"/>
                 </Border>
 
-                <Border Background="#E0E0E0"
-                        Height="32"
-                        CornerRadius="8,8,0,0"
-                        Padding="20,8"
-                        Margin="2,0">
-                    <TextBlock Text="Nhân lực" 
-                               VerticalAlignment="Center"
-                               FontWeight="Medium"/>
+                <Border x:Name="TabNhanLuc" Style="{StaticResource TabInactive}"
+                        MouseDown="Tab_Click" Tag="NhanLuc">
+                    <TextBlock x:Name="TabNhanLucText" Text="Nhân lực"
+                               Style="{StaticResource TabTextInactive}"/>
                 </Border>
 
-                <Border Background="#E0E0E0"
-                        Height="32"
-                        CornerRadius="8,8,0,0"
-                        Padding="20,8"
-                        Margin="2,0">
-                    <TextBlock Text="Máy móc" 
-                               VerticalAlignment="Center"
-                               FontWeight="Medium"/>
+                <Border x:Name="TabMayMoc" Style="{StaticResource TabInactive}"
+                        MouseDown="Tab_Click" Tag="MayMoc">
+                    <TextBlock x:Name="TabMayMocText" Text="Máy móc"
+                               Style="{StaticResource TabTextInactive}"/>
                 </Border>
 
-                <Border Background="#E0E0E0"
-                        Height="32"
-                        CornerRadius="8,8,0,0"
-                        Padding="20,8"
-                        Margin="2,0">
-                    <TextBlock Text="Nhật ký thi công" 
-                               VerticalAlignment="Center"
-                               FontWeight="Medium"/>
+                <Border x:Name="TabNhatKy" Style="{StaticResource TabInactive}"
+                        MouseDown="Tab_Click" Tag="NhatKy">
+                    <TextBlock x:Name="TabNhatKyText" Text="Nhật ký thi công"
+                               Style="{StaticResource TabTextInactive}"/>
                 </Border>
 
-                <Border Background="#E0E0E0"
-                        Height="32"
-                        CornerRadius="8,8,0,0"
-                        Padding="20,8"
-                        Margin="2,0">
-                    <TextBlock Text="Biên bản" 
-                               VerticalAlignment="Center"
-                               FontWeight="Medium"/>
+                <Border x:Name="TabBienBan" Style="{StaticResource TabInactive}"
+                        MouseDown="Tab_Click" Tag="BienBan">
+                    <TextBlock x:Name="TabBienBanText" Text="Biên bản"
+                               Style="{StaticResource TabTextInactive}"/>
                 </Border>
+
             </StackPanel>
         </Border>
 
         <!-- ================= RIBBON TOOLS ================= -->
-        <Border Grid.Row="2"
-                Background="White"
-                BorderBrush="#CCCCCC"
-                BorderThickness="0,0,0,1">
+        <Border Grid.Row="2" Background="White" BorderBrush="#CCCCCC" BorderThickness="0,0,0,1">
             <Grid Margin="15,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -155,39 +130,21 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Checkbox group -->
-                <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,15,0">
-                    <CheckBox x:Name="DauVaoVatTuCheckBox" 
-                              Content="Đầu vào vật tư"
-                              FontSize="11"
-                              Margin="0,2"
-                              VerticalAlignment="Center"/>
-                    <CheckBox x:Name="BangPhanBoVatTuCheckBox" 
-                              Content="Bảng phân bổ vật tư"
-                              FontSize="11"
-                              Margin="0,2"
-                              VerticalAlignment="Center"/>
-                </StackPanel>
-
-                <!-- Separator -->
-                <Border Grid.Column="1" 
-                        Width="1" 
-                        Background="#CCCCCC" 
-                        Margin="5,0"/>
-
-                <!-- Tool buttons -->
-                <StackPanel Grid.Column="2" 
-                            Orientation="Horizontal" 
-                            Margin="15,0">
-
-                    <!-- Xóa vật tư - Icon SVG phẳng -->
-                    <Button Click="XoaVatTu_Click"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Cursor="Hand"
-                            Padding="5"
-                            Margin="0,0,10,0"
-                            ToolTip="Xóa vật tư">
+                <!-- Ribbon VatTu -->
+                <StackPanel x:Name="RibbonVatTu" Grid.Column="0"
+                            Orientation="Horizontal" Margin="0,0,10,0">
+                    <StackPanel Orientation="Vertical" Margin="0,0,15,0">
+                        <CheckBox x:Name="DauVaoVatTuCheckBox"
+                                  Content="Đầu vào vật tư" FontSize="11"
+                                  Margin="0,2" VerticalAlignment="Center"/>
+                        <CheckBox x:Name="BangPhanBoVatTuCheckBox"
+                                  Content="Bảng phân bổ vật tư" FontSize="11"
+                                  Margin="0,2" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Border Width="1" Background="#CCCCCC" Margin="5,0"/>
+                    <Button Click="XoaVatTu_Click" Background="Transparent"
+                            BorderThickness="0" Cursor="Hand" Padding="5"
+                            Margin="15,0,10,0" ToolTip="Xóa vật tư">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                             <Viewbox Width="28" Height="28" Margin="0,0,0,1">
                                 <Canvas Width="24" Height="24">
@@ -195,35 +152,43 @@
                                           Fill="#424242"/>
                                 </Canvas>
                             </Viewbox>
-                            <TextBlock Text="Xóa vật tư" 
-                                       FontSize="9" 
-                                       HorizontalAlignment="Center"
-                                       Foreground="#424242"/>
+                            <TextBlock Text="Xóa vật tư" FontSize="9"
+                                       HorizontalAlignment="Center" Foreground="#424242"/>
                         </StackPanel>
                     </Button>
+                </StackPanel>
 
+                <!-- Ribbon NhatKy (ẩn mặc định) -->
+                <StackPanel x:Name="RibbonNhatKy" Grid.Column="0"
+                            Orientation="Horizontal" Margin="0,0,10,0"
+                            Visibility="Collapsed">
+                    <Button Click="ThemCongTacNhatKy_Click" Background="Transparent"
+                            BorderThickness="0" Cursor="Hand" Padding="5"
+                            Margin="0,0,10,0" ToolTip="Thêm công tác">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <Viewbox Width="28" Height="28" Margin="0,0,0,1">
+                                <Canvas Width="24" Height="24">
+                                    <Path Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M17,13 L13,13 L13,17 L11,17 L11,13 L7,13 L7,11 L11,11 L11,7 L13,7 L13,11 L17,11 L17,13 Z"
+                                          Fill="#5B8C3A"/>
+                                </Canvas>
+                            </Viewbox>
+                            <TextBlock Text="Thêm công tác" FontSize="9"
+                                       HorizontalAlignment="Center" Foreground="#5B8C3A"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
 
                 <!-- Search -->
-                <StackPanel Grid.Column="3" 
-                            Orientation="Horizontal" 
-                            Margin="15,0"
-                            VerticalAlignment="Center">
-                    <TextBlock Text="🔍" 
-                               FontSize="16" 
-                               VerticalAlignment="Center" 
-                               Margin="0,0,8,0"/>
-                    <TextBlock Text="Tìm kiếm" 
-                               FontSize="12" 
-                               VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="3" Orientation="Horizontal"
+                            Margin="15,0" VerticalAlignment="Center">
+                    <TextBlock Text="🔍" FontSize="16" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBlock Text="Tìm kiếm" FontSize="12" VerticalAlignment="Center"/>
                 </StackPanel>
-
             </Grid>
         </Border>
 
         <!-- ================= CONTENT ================= -->
-        <ContentControl x:Name="MainContent"
-                        Grid.Row="3">
+        <ContentControl x:Name="MainContent" Grid.Row="3">
             <vattu:VatTuView x:Name="VatTuViewControl"/>
         </ContentControl>
     </Grid>

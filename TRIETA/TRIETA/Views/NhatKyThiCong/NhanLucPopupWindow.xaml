@@ -1,0 +1,133 @@
+﻿<Window x:Class="Trita.Views.NhatKyThiCong.NhanLucPopupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Khai báo nhân lực"
+        Width="440" Height="360"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#F5F5F5">
+
+    <Window.Resources>
+        <Style x:Key="LabelStyle" TargetType="Border">
+            <Setter Property="Background" Value="#E6E6E6"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="15,0"/>
+        </Style>
+        <Style x:Key="InputStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="Padding" Value="12,0"/>
+        </Style>
+        <Style x:Key="RoundBtn" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="KHAI BÁO NHÂN LỰC"
+                   FontSize="16" FontWeight="Bold"
+                   Foreground="#2E4057"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,20"/>
+
+        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+
+            <!-- Số lượng nhân công -->
+            <Grid Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Style="{StaticResource LabelStyle}">
+                    <TextBlock Text="Số lượng nhân công" VerticalAlignment="Center" FontWeight="Bold"/>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource InputStyle}">
+                    <TextBox x:Name="SoLuongNhanCongTextBox"
+                             Background="Transparent" BorderThickness="0"
+                             VerticalContentAlignment="Center"/>
+                </Border>
+            </Grid>
+
+            <!-- Kỹ thuật -->
+            <Grid Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Style="{StaticResource LabelStyle}">
+                    <TextBlock Text="Kỹ thuật" VerticalAlignment="Center" FontWeight="Bold"/>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource InputStyle}">
+                    <TextBox x:Name="KyThuatTextBox"
+                             Background="Transparent" BorderThickness="0"
+                             VerticalContentAlignment="Center"/>
+                </Border>
+            </Grid>
+
+            <!-- An toàn lao động -->
+            <Grid Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Style="{StaticResource LabelStyle}">
+                    <TextBlock Text="An toàn lao động" VerticalAlignment="Center" FontWeight="Bold"/>
+                </Border>
+                <Border Grid.Column="1" Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="20" Height="38" Margin="10,0,0,0" Padding="15,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <RadioButton x:Name="AnToanLaoDongCo" Content="Có" Margin="0,0,20,0" GroupName="AnToanLD" VerticalAlignment="Center"/>
+                        <RadioButton x:Name="AnToanLaoDongKhong" Content="Không" GroupName="AnToanLD" IsChecked="True" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- An toàn vệ sinh môi trường -->
+            <Grid Margin="0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Style="{StaticResource LabelStyle}">
+                    <TextBlock Text="An toàn VSMT" VerticalAlignment="Center" FontWeight="Bold"/>
+                </Border>
+                <Border Grid.Column="1" Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="20" Height="38" Margin="10,0,0,0" Padding="15,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <RadioButton x:Name="AnToanVSMTCo" Content="Có" Margin="0,0,20,0" GroupName="AnToanVSMT" VerticalAlignment="Center"/>
+                        <RadioButton x:Name="AnToanVSMTKhong" Content="Không" GroupName="AnToanVSMT" IsChecked="True" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Hủy" Width="90" Height="34" Background="#CCCCCC" Foreground="#333"
+                    Style="{StaticResource RoundBtn}" Padding="0" Margin="0,0,10,0" Click="Huy_Click"/>
+            <Button Content="Xác nhận" Width="100" Height="34" Background="#3A7BD5" Foreground="White"
+                    Style="{StaticResource RoundBtn}" Padding="0" Click="XacNhan_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
