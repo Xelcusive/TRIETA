@@ -1,10 +1,8 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TRIETA.Views.NhatKyThiCong.Models
+namespace Trita.Views.NhatKyThiCong
 {
     public class CongTacItem
     {
@@ -33,7 +31,6 @@ namespace TRIETA.Views.NhatKyThiCong.Models
 
     public class VatLieuSuDung
     {
-        /// <summary>Tên vật liệu - lấy từ danh sách VatTu đã khai báo</summary>
         public string TenVatLieu { get; set; } = "";
         public string DonVi { get; set; } = "";
         public double KhoiLuong { get; set; } = 0;
@@ -41,7 +38,6 @@ namespace TRIETA.Views.NhatKyThiCong.Models
 
     public class MayMocSuDung
     {
-        /// <summary>Tên máy - lấy từ danh sách Máy thi công đã khai báo</summary>
         public string TenMay { get; set; } = "";
         public int SoLuong { get; set; } = 1;
         public double CaMay { get; set; } = 1;
@@ -55,6 +51,16 @@ namespace TRIETA.Views.NhatKyThiCong.Models
         public bool AnToanVeSinhMoiTruong { get; set; } = false;
     }
 
+    /// <summary>Công việc được nghiệm thu trong ngày</summary>
+    public class NghiemThuItem
+    {
+        public string HangMuc { get; set; } = "";
+        public string TenCongViec { get; set; } = "";
+        public string LyTrinh { get; set; } = "";
+        /// <summary>Giờ phút nghiệm thu (chỉ dùng phần giờ/phút)</summary>
+        public TimeSpan GioPhut { get; set; } = DateTime.Now.TimeOfDay;
+    }
+
     public class NhatKyThiCongData
     {
         public string DuAn { get; set; } = "";
@@ -63,10 +69,33 @@ namespace TRIETA.Views.NhatKyThiCong.Models
         public string ThoiTietSang { get; set; } = "";
         public string ThoiTietChieu { get; set; } = "";
         public List<CongTacItem> DanhSachCongTac { get; set; }
+        public List<NghiemThuItem> DanhSachNghiemThu { get; set; }
 
         public NhatKyThiCongData()
         {
             DanhSachCongTac = new List<CongTacItem>();
+            DanhSachNghiemThu = new List<NghiemThuItem>();
+        }
+    }
+
+    /// <summary>
+    /// Lưu lịch sử tất cả các ngày đã khai báo trong phiên làm việc.
+    /// Dùng để lọc dữ liệu cho popup nghiệm thu.
+    /// </summary>
+    public static class LichSuNhatKy
+    {
+        public static List<NhatKyThiCongData> TatCaNgay { get; } = new List<NhatKyThiCongData>();
+
+        /// <summary>Lấy tất cả CongTacItem đã khai báo từ trước đến ngày hiện tại</summary>
+        public static List<CongTacItem> LayTatCaCongTac(DateTime? truocNgay = null)
+        {
+            var result = new List<CongTacItem>();
+            foreach (var ngay in TatCaNgay)
+            {
+                if (truocNgay == null || ngay.Ngay < truocNgay.Value)
+                    result.AddRange(ngay.DanhSachCongTac);
+            }
+            return result;
         }
     }
 }

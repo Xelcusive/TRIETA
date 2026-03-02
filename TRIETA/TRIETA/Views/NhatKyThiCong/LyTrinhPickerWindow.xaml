@@ -1,0 +1,73 @@
+﻿<Window x:Class="Trita.Views.NhatKyThiCong.LyTrinhPickerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Chọn lý trình"
+        Width="420" Height="420"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F5F5F5">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Tiêu đề -->
+        <TextBlock Grid.Row="0"
+                   Text="CHỌN LÝ TRÌNH"
+                   FontSize="15" FontWeight="Bold"
+                   Foreground="#2E4057"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,14"/>
+
+        <!-- Đang chọn cho công việc nào -->
+        <Border Grid.Row="1"
+                Background="#EEF5EE"
+                BorderBrush="#AADDAA"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="12,8"
+                Margin="0,0,0,10">
+            <TextBlock x:Name="TxtCongViecInfo"
+                       FontSize="12" Foreground="#2E7D32"
+                       TextWrapping="Wrap"/>
+        </Border>
+
+        <!-- Danh sách lý trình -->
+        <Border Grid.Row="2"
+                Background="White"
+                BorderBrush="#CCCCCC"
+                BorderThickness="1"
+                CornerRadius="10"
+                Padding="8">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="DanhSachPanel"/>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,14,0,0">
+            <Button Content="Hủy"
+                    Width="90" Height="36"
+                    Background="#CCCCCC" Foreground="#333"
+                    Cursor="Hand"
+                    Margin="0,0,10,0"
+                    Click="Huy_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="8" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -3,10 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <UserControl.Resources>
-        <Style x:Key="HeaderLabel" TargetType="TextBlock">
+        <Style x:Key="TblHeaderCell" TargetType="Border">
+            <Setter Property="Background" Value="#5B8C3A"/>
+            <Setter Property="Padding" Value="4,7"/>
+        </Style>
+        <Style x:Key="NTHeaderCell" TargetType="Border">
+            <Setter Property="Background" Value="#2E7D32"/>
+            <Setter Property="Padding" Value="4,7"/>
+        </Style>
+        <Style x:Key="HeaderTxt" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="11"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
         <Style x:Key="InputBox" TargetType="Border">
             <Setter Property="Background" Value="White"/>
@@ -14,199 +25,246 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="6"/>
             <Setter Property="Padding" Value="8,0"/>
-            <Setter Property="Height" Value="30"/>
-        </Style>
-        <Style x:Key="TableHeaderCell" TargetType="Border">
-            <Setter Property="Background" Value="#5B8C3A"/>
-            <Setter Property="Padding" Value="4,6"/>
-        </Style>
-        <Style x:Key="DetailSectionTitle" TargetType="TextBlock">
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="TextDecorations" Value="Underline"/>
-            <Setter Property="Margin" Value="0,10,0,6"/>
+            <Setter Property="Height" Value="28"/>
         </Style>
     </UserControl.Resources>
 
-    <Grid Margin="16">
+    <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <!-- Header thông tin ngày -->
             <RowDefinition Height="*"/>
-            <RowDefinition Height="220"/>
+            <!-- Nội dung chính -->
+            <RowDefinition Height="170"/>
+            <!-- Biểu đồ -->
         </Grid.RowDefinitions>
 
         <!-- ===== HEADER: THÔNG TIN NGÀY ===== -->
         <Border Grid.Row="0"
-                Background="White"
-                BorderBrush="#CCCCCC"
-                BorderThickness="1"
-                CornerRadius="12"
-                Padding="16,10"
-                Margin="0,0,0,12">
+                Background="White" BorderBrush="#CCCCCC"
+                BorderThickness="1" CornerRadius="10"
+                Padding="14,8" Margin="0,0,0,8">
             <WrapPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,20,4">
-                    <TextBlock Text="Dự án:" Style="{StaticResource HeaderLabel}" Margin="0,0,6,0"/>
-                    <Border Style="{StaticResource InputBox}" Width="180">
+                <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+                    <TextBlock Text="Dự án:" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <Border Style="{StaticResource InputBox}" Width="160">
                         <TextBox x:Name="DuAnTextBox" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center"/>
                     </Border>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,20,4">
-                    <TextBlock Text="Địa điểm:" Style="{StaticResource HeaderLabel}" Margin="0,0,6,0"/>
-                    <Border Style="{StaticResource InputBox}" Width="180">
+                <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+                    <TextBlock Text="Địa điểm:" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <Border Style="{StaticResource InputBox}" Width="160">
                         <TextBox x:Name="DiaDiemTextBox" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center"/>
                     </Border>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,20,4">
-                    <TextBlock Text="Ngày:" Style="{StaticResource HeaderLabel}" Margin="0,0,6,0"/>
-                    <Border Style="{StaticResource InputBox}" Width="120" Padding="4,0">
+                <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+                    <TextBlock Text="Ngày:" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <Border Style="{StaticResource InputBox}" Width="110" Padding="4,0">
                         <DatePicker x:Name="NgayPicker" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center"/>
                     </Border>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,20,4">
-                    <TextBlock Text="Thời tiết buổi sáng:" Style="{StaticResource HeaderLabel}" Margin="0,0,6,0"/>
-                    <Border Style="{StaticResource InputBox}" Width="100">
+                <StackPanel Orientation="Horizontal" Margin="0,0,16,0">
+                    <TextBlock Text="Thời tiết buổi sáng:" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <Border Style="{StaticResource InputBox}" Width="90">
                         <TextBox x:Name="ThoiTietSangTextBox" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center"/>
                     </Border>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                    <TextBlock Text="Thời tiết buổi chiều:" Style="{StaticResource HeaderLabel}" Margin="0,0,6,0"/>
-                    <Border Style="{StaticResource InputBox}" Width="100">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Thời tiết buổi chiều:" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <Border Style="{StaticResource InputBox}" Width="90">
                         <TextBox x:Name="ThoiTietChieuTextBox" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center"/>
                     </Border>
                 </StackPanel>
             </WrapPanel>
         </Border>
 
-        <!-- ===== PHẦN GIỮA: BẢNG + CHI TIẾT ===== -->
-        <Grid Grid.Row="1">
+        <!-- ===== PHẦN GIỮA ===== -->
+        <Grid Grid.Row="1" Margin="0,0,0,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="12"/>
-                <ColumnDefinition Width="380"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="340"/>
             </Grid.ColumnDefinitions>
 
-            <!-- CỘT TRÁI: BẢNG CÔNG TÁC CHI TIẾT -->
-            <Border Grid.Column="0"
-                    Background="White"
-                    BorderBrush="#CCCCCC"
-                    BorderThickness="1"
-                    CornerRadius="12"
-                    Padding="14">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <!-- CỘT TRÁI: Bảng công tác + Bảng nghiệm thu -->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="200"/>
+                </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0"
-                               Text="Công tác chi tiết"
-                               FontSize="16" FontWeight="Bold"
-                               Margin="0,0,0,10"/>
+                <!-- BẢNG CÔNG TÁC CHI TIẾT -->
+                <Border Grid.Row="0" Background="White" BorderBrush="#CCCCCC"
+                        BorderThickness="1" CornerRadius="10" Padding="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                    <!-- Header bảng -->
-                    <Border Grid.Row="1" CornerRadius="8,8,0,0" ClipToBounds="True">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="90"/>
-                                <ColumnDefinition Width="110"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="65"/>
-                                <ColumnDefinition Width="65"/>
-                                <ColumnDefinition Width="55"/>
-                                <ColumnDefinition Width="65"/>
-                                <ColumnDefinition Width="55"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Công tác chi tiết"
+                                   FontSize="14" FontWeight="Bold" Margin="0,0,0,6"/>
 
-                            <!-- Row 1 headers -->
-                            <Border Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource TableHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
-                                <TextBlock Text="STT" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11"/>
-                            </Border>
-                            <Border Grid.Column="1" Grid.RowSpan="2" Style="{StaticResource TableHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
-                                <TextBlock Text="Hạng mục" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11" TextWrapping="Wrap"/>
-                            </Border>
-                            <Border Grid.Column="2" Grid.RowSpan="2" Style="{StaticResource TableHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
-                                <TextBlock Text="Công việc" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11" TextWrapping="Wrap"/>
-                            </Border>
-                            <Border Grid.Column="3" Grid.RowSpan="2" Style="{StaticResource TableHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
-                                <TextBlock Text="Lý trình" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11"/>
-                            </Border>
+                        <!-- Header bảng công tác -->
+                        <Border Grid.Row="1" CornerRadius="6,6,0,0" ClipToBounds="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="36"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="56"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="58"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource TblHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
+                                    <TextBlock Text="STT" Style="{StaticResource HeaderTxt}"/>
+                                </Border>
+                                <Border Grid.Column="1" Grid.RowSpan="2" Style="{StaticResource TblHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Hạng mục" Style="{StaticResource HeaderTxt}"/>
+                                </Border>
+                                <Border Grid.Column="2" Grid.RowSpan="2" Style="{StaticResource TblHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Công việc" Style="{StaticResource HeaderTxt}"/>
+                                </Border>
+                                <Border Grid.Column="3" Grid.RowSpan="2" Style="{StaticResource TblHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Lý trình" Style="{StaticResource HeaderTxt}"/>
+                                </Border>
+                                <!-- Thực hiện -->
+                                <Border Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource TblHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Thực hiện" Style="{StaticResource HeaderTxt}"/>
+                                </Border>
+                                <Border Grid.Column="4" Grid.Row="1" Style="{StaticResource TblHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0" Padding="2,4">
+                                    <TextBlock Text="ĐV" Style="{StaticResource HeaderTxt}" FontSize="10"/>
+                                </Border>
+                                <Border Grid.Column="5" Grid.Row="1" Style="{StaticResource TblHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0" Padding="2,4">
+                                    <TextBlock Text="KL" Style="{StaticResource HeaderTxt}" FontSize="10"/>
+                                </Border>
+                                <Border Grid.Column="6" Grid.RowSpan="2" Style="{StaticResource TblHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
+                                    <TextBlock Text="TĐ%" Style="{StaticResource HeaderTxt}" FontSize="10"/>
+                                </Border>
+                                <Border Grid.Column="7" Grid.RowSpan="2" Style="{StaticResource TblHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Máy" Style="{StaticResource HeaderTxt}" FontSize="10"/>
+                                </Border>
+                                <Border Grid.Column="8" Grid.RowSpan="2" Style="{StaticResource TblHeaderCell}">
+                                    <TextBlock Text="VL" Style="{StaticResource HeaderTxt}" FontSize="10"/>
+                                </Border>
+                            </Grid>
+                        </Border>
 
-                            <!-- Thực hiện - span 2 cột -->
-                            <Border Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource TableHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
-                                <TextBlock Text="Thực hiện" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" FontSize="11"/>
-                            </Border>
-                            <Border Grid.Column="4" Grid.Row="1" Style="{StaticResource TableHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0" Padding="2,4">
-                                <TextBlock Text="Đơn vị" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" FontSize="10"/>
-                            </Border>
-                            <Border Grid.Column="5" Grid.Row="1" Style="{StaticResource TableHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0" Padding="2,4">
-                                <TextBlock Text="Khối lượng" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" FontSize="10" TextWrapping="Wrap"/>
-                            </Border>
+                        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                            <StackPanel x:Name="BangCongTacPanel"/>
+                        </ScrollViewer>
 
-                            <Border Grid.Column="6" Grid.RowSpan="2" Style="{StaticResource TableHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
-                                <TextBlock Text="Tiến độ %" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" TextWrapping="Wrap"/>
-                            </Border>
-                            <Border Grid.Column="7" Grid.RowSpan="2" Style="{StaticResource TableHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
-                                <TextBlock Text="Máy móc/TB" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" TextWrapping="Wrap"/>
-                            </Border>
-                            <Border Grid.Column="8" Grid.RowSpan="2" Style="{StaticResource TableHeaderCell}">
-                                <TextBlock Text="Vật liệu" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11"/>
-                            </Border>
-                        </Grid>
-                    </Border>
+                        <Button Grid.Row="3"
+                                Content="[+]  Thêm công tác"
+                                Background="Transparent" BorderThickness="0"
+                                Foreground="#5B8C3A" FontWeight="Bold"
+                                FontStyle="Italic" Cursor="Hand"
+                                HorizontalAlignment="Left"
+                                Margin="0,4,0,0"
+                                Click="ThemCongTac_Click"/>
+                    </Grid>
+                </Border>
 
-                    <!-- Dữ liệu bảng -->
-                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-                        <StackPanel x:Name="BangCongTacPanel"/>
-                    </ScrollViewer>
+                <!-- BẢNG CÔNG VIỆC NGHIỆM THU -->
+                <Border Grid.Row="2" Background="White" BorderBrush="#2E7D32"
+                        BorderThickness="1" CornerRadius="10" Padding="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                    <!-- Nút thêm dòng -->
-                    <Button Grid.Row="3"
-                            Content="[+]  Thêm công tác"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Foreground="#5B8C3A"
-                            FontWeight="Bold"
-                            FontStyle="Italic"
-                            Cursor="Hand"
-                            HorizontalAlignment="Left"
-                            Margin="0,8,0,0"
-                            Click="ThemCongTac_Click"/>
-                </Grid>
-            </Border>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6">
+                            <TextBlock Text="Nội dung công việc nghiệm thu"
+                                       FontSize="13" FontWeight="Bold"
+                                       Foreground="#2E7D32"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="  (click vào dòng để chỉnh sửa)"
+                                       FontSize="10" FontStyle="Italic"
+                                       Foreground="Gray"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Header bảng nghiệm thu -->
+                        <Border Grid.Row="1" CornerRadius="6,6,0,0" ClipToBounds="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="36"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="40"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{StaticResource NTHeaderCell}" BorderBrush="#1B5E20" BorderThickness="0,0,1,0">
+                                    <TextBlock Text="STT" Style="{StaticResource HeaderTxt}"/>
+                                </Border>
+                                <Border Grid.Column="1" Style="{StaticResource NTHeaderCell}" BorderBrush="#1B5E20" BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Hạng mục" Style="{StaticResource HeaderTxt}"/>
+                                </Border>
+                                <Border Grid.Column="2" Style="{StaticResource NTHeaderCell}" BorderBrush="#1B5E20" BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Tên công việc" Style="{StaticResource HeaderTxt}"/>
+                                </Border>
+                                <Border Grid.Column="3" Style="{StaticResource NTHeaderCell}" BorderBrush="#1B5E20" BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Lý trình" Style="{StaticResource HeaderTxt}"/>
+                                </Border>
+                                <Border Grid.Column="4" Style="{StaticResource NTHeaderCell}" BorderBrush="#1B5E20" BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Giờ - Phút" Style="{StaticResource HeaderTxt}"/>
+                                </Border>
+                                <Border Grid.Column="5" Style="{StaticResource NTHeaderCell}">
+                                    <TextBlock Text="" Style="{StaticResource HeaderTxt}"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                            <StackPanel x:Name="BangNghiemThuPanel"/>
+                        </ScrollViewer>
+
+                        <Button Grid.Row="3"
+                                Content="[+]  Thêm nghiệm thu"
+                                Background="Transparent" BorderThickness="0"
+                                Foreground="#2E7D32" FontWeight="Bold"
+                                FontStyle="Italic" Cursor="Hand"
+                                HorizontalAlignment="Left"
+                                Margin="0,4,0,0"
+                                Click="ThemNghiemThu_Click"/>
+                    </Grid>
+                </Border>
+            </Grid>
 
             <!-- CỘT PHẢI: CHI TIẾT CÔNG TÁC -->
-            <Border Grid.Column="2"
-                    Background="White"
-                    BorderBrush="#CCCCCC"
-                    BorderThickness="1"
-                    CornerRadius="12">
+            <Border Grid.Column="2" Background="White" BorderBrush="#CCCCCC"
+                    BorderThickness="1" CornerRadius="10">
+                <!-- Header xanh -->
                 <Grid>
-                    <!-- Header xanh -->
-                    <Border VerticalAlignment="Top"
-                            Background="#3A7BD5"
-                            CornerRadius="12,12,0,0"
-                            Padding="16,10">
+                    <Border VerticalAlignment="Top" Background="#3A7BD5"
+                            CornerRadius="10,10,0,0" Padding="12,8">
                         <TextBlock Text="Chi tiết công tác"
-                                   FontWeight="Bold" FontSize="14"
+                                   FontWeight="Bold" FontSize="13"
                                    Foreground="White"
                                    HorizontalAlignment="Center"/>
                     </Border>
-
-                    <ScrollViewer Margin="0,46,0,0" Padding="16,10" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer Margin="0,40,0,0" Padding="12,8"
+                                  VerticalScrollBarVisibility="Auto">
                         <StackPanel x:Name="ChiTietCongTacPanel">
                             <TextBlock Text="← Chọn một công tác để xem chi tiết"
-                                       FontStyle="Italic"
-                                       Foreground="Gray"
+                                       FontStyle="Italic" Foreground="Gray"
                                        TextWrapping="Wrap"
                                        HorizontalAlignment="Center"
-                                       Margin="0,40,0,0"/>
+                                       Margin="0,30,0,0"/>
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
@@ -214,15 +272,11 @@
         </Grid>
 
         <!-- ===== PHẦN DƯỚI: BIỂU ĐỒ ===== -->
-        <Border Grid.Row="2"
-                Background="White"
-                BorderBrush="#CCCCCC"
-                BorderThickness="1"
-                CornerRadius="12"
-                Padding="16,12"
-                Margin="0,12,0,0">
+        <Border Grid.Row="2" Background="White" BorderBrush="#CCCCCC"
+                BorderThickness="1" CornerRadius="10" Padding="10,8">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -230,26 +284,43 @@
 
                 <!-- Biểu đồ Vật liệu -->
                 <StackPanel Grid.Column="0" HorizontalAlignment="Center">
-                    <TextBlock Text="Vật liệu" FontWeight="Bold" FontSize="13"
-                               HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                    <Canvas x:Name="BieuDoVatLieu" Width="120" Height="120"/>
-                    <StackPanel x:Name="ChuThichVatLieu" Margin="0,8,0,0"/>
+                    <TextBlock Text="Vật liệu" FontWeight="Bold" FontSize="11"
+                               HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                    <Canvas x:Name="BieuDoVatLieu" Width="100" Height="100"/>
+                    <StackPanel x:Name="ChuThichVatLieu" Margin="0,4,0,0"/>
                 </StackPanel>
 
                 <!-- Biểu đồ Máy móc -->
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center">
-                    <TextBlock Text="Máy móc/Thiết bị" FontWeight="Bold" FontSize="13"
-                               HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                    <Canvas x:Name="BieuDoMayMoc" Width="120" Height="120"/>
-                    <StackPanel x:Name="ChuThichMayMoc" Margin="0,8,0,0"/>
+                    <TextBlock Text="Máy móc/Thiết bị" FontWeight="Bold" FontSize="11"
+                               HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                    <Canvas x:Name="BieuDoMayMoc" Width="100" Height="100"/>
+                    <StackPanel x:Name="ChuThichMayMoc" Margin="0,4,0,0"/>
                 </StackPanel>
 
                 <!-- Biểu đồ Nhân lực -->
                 <StackPanel Grid.Column="2" HorizontalAlignment="Center">
-                    <TextBlock Text="Nhân lực" FontWeight="Bold" FontSize="13"
-                               HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                    <Canvas x:Name="BieuDoNhanLuc" Width="120" Height="120"/>
-                    <StackPanel x:Name="ChuThichNhanLuc" Margin="0,8,0,0"/>
+                    <TextBlock Text="Nhân lực" FontWeight="Bold" FontSize="11"
+                               HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                    <Canvas x:Name="BieuDoNhanLuc" Width="100" Height="100"/>
+                    <StackPanel x:Name="ChuThichNhanLuc" Margin="0,4,0,0"/>
+                </StackPanel>
+
+                <!-- Biểu đồ Tiến độ (Donut) -->
+                <StackPanel Grid.Column="3" HorizontalAlignment="Center">
+                    <TextBlock Text="Tiến độ thực hiện" FontWeight="Bold" FontSize="11"
+                               HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                    <Grid Width="100" Height="100">
+                        <Canvas x:Name="BieuDoTienDo" Width="100" Height="100"/>
+                        <!-- % hiển thị giữa donut -->
+                        <TextBlock x:Name="TienDoText"
+                                   Text="0%"
+                                   FontSize="16" FontWeight="Bold"
+                                   Foreground="#3A7BD5"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                    <StackPanel x:Name="ChuThichTienDo" Margin="0,4,0,0"/>
                 </StackPanel>
             </Grid>
         </Border>
