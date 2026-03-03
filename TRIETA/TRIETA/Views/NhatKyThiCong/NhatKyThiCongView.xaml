@@ -118,9 +118,11 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="56"/>
                                     <ColumnDefinition Width="60"/>
+
                                     <ColumnDefinition Width="50"/>
                                     <ColumnDefinition Width="58"/>
                                     <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="28"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -154,8 +156,11 @@
                                 <Border Grid.Column="7" Grid.RowSpan="2" Style="{StaticResource TblHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
                                     <TextBlock Text="Máy" Style="{StaticResource HeaderTxt}" FontSize="10"/>
                                 </Border>
-                                <Border Grid.Column="8" Grid.RowSpan="2" Style="{StaticResource TblHeaderCell}">
+                                <Border Grid.Column="8" Grid.RowSpan="2" Style="{StaticResource TblHeaderCell}" BorderBrush="#4A7A2A" BorderThickness="0,0,1,0">
                                     <TextBlock Text="VL" Style="{StaticResource HeaderTxt}" FontSize="10"/>
+                                </Border>
+                                <Border Grid.Column="9" Grid.RowSpan="2" Style="{StaticResource TblHeaderCell}">
+                                    <TextBlock Text="" Style="{StaticResource HeaderTxt}"/>
                                 </Border>
                             </Grid>
                         </Border>
@@ -202,28 +207,32 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="36"/>
-                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="85"/>
+                                    <ColumnDefinition Width="90"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="75"/>
                                     <ColumnDefinition Width="40"/>
                                 </Grid.ColumnDefinitions>
                                 <Border Grid.Column="0" Style="{StaticResource NTHeaderCell}" BorderBrush="#1B5E20" BorderThickness="0,0,1,0">
                                     <TextBlock Text="STT" Style="{StaticResource HeaderTxt}"/>
                                 </Border>
                                 <Border Grid.Column="1" Style="{StaticResource NTHeaderCell}" BorderBrush="#1B5E20" BorderThickness="0,0,1,0">
-                                    <TextBlock Text="Hạng mục" Style="{StaticResource HeaderTxt}"/>
+                                    <TextBlock Text="Ngày" Style="{StaticResource HeaderTxt}"/>
                                 </Border>
                                 <Border Grid.Column="2" Style="{StaticResource NTHeaderCell}" BorderBrush="#1B5E20" BorderThickness="0,0,1,0">
-                                    <TextBlock Text="Tên công việc" Style="{StaticResource HeaderTxt}"/>
+                                    <TextBlock Text="Hạng mục" Style="{StaticResource HeaderTxt}"/>
                                 </Border>
                                 <Border Grid.Column="3" Style="{StaticResource NTHeaderCell}" BorderBrush="#1B5E20" BorderThickness="0,0,1,0">
-                                    <TextBlock Text="Lý trình" Style="{StaticResource HeaderTxt}"/>
+                                    <TextBlock Text="Tên công việc" Style="{StaticResource HeaderTxt}"/>
                                 </Border>
                                 <Border Grid.Column="4" Style="{StaticResource NTHeaderCell}" BorderBrush="#1B5E20" BorderThickness="0,0,1,0">
+                                    <TextBlock Text="Lý trình" Style="{StaticResource HeaderTxt}"/>
+                                </Border>
+                                <Border Grid.Column="5" Style="{StaticResource NTHeaderCell}" BorderBrush="#1B5E20" BorderThickness="0,0,1,0">
                                     <TextBlock Text="Giờ - Phút" Style="{StaticResource HeaderTxt}"/>
                                 </Border>
-                                <Border Grid.Column="5" Style="{StaticResource NTHeaderCell}">
+                                <Border Grid.Column="6" Style="{StaticResource NTHeaderCell}">
                                     <TextBlock Text="" Style="{StaticResource HeaderTxt}"/>
                                 </Border>
                             </Grid>

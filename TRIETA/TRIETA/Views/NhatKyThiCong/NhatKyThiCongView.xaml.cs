@@ -6,14 +6,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Trita.Views.NhatKyThiCong;
-using Trita.Views.NhatKyThiCong;
 using Trita.Views.VatTu;
 
 namespace Trita.Views.NhatKyThiCong
 {
     public partial class NhatKyThiCongView : UserControl
     {
+        /// <summary>Lưu data theo ngày: key = ngày, value = NhatKyThiCongData</summary>
+        private readonly System.Collections.Generic.Dictionary<DateTime, NhatKyThiCongData>
+            _danhSachNgay = new System.Collections.Generic.Dictionary<DateTime, NhatKyThiCongData>();
+
         private NhatKyThiCongData _data = new NhatKyThiCongData();
         private CongTacItem _congTacDangChon;
 
@@ -35,24 +37,89 @@ namespace Trita.Views.NhatKyThiCong
         public NhatKyThiCongView()
         {
             InitializeComponent();
+
+            // Gán handler trước khi set ngày
+            NgayPicker.SelectedDateChanged += NgayPicker_SelectedDateChanged;
             NgayPicker.SelectedDate = DateTime.Today;
 
-            // Dữ liệu mẫu
-            _data.DanhSachCongTac.Add(new CongTacItem
+            // Khởi tạo data cho ngày hôm nay kèm dữ liệu mẫu
+            _data = LayHoatTaoDataNgay(DateTime.Today);
+            if (_data.DanhSachCongTac.Count == 0)
             {
-                HangMuc = "Hạng mục 1",
-                CongViec = "Công việc 1",
-                LyTrinh = "Từ A đến B",
-                DonVi = "Đơn vị 1",
-                KhoiLuong = 0,
-                TienDo = 70
-            });
-
-            // Đẩy vào lịch sử
-            LichSuNhatKy.TatCaNgay.Add(_data);
+                _data.DanhSachCongTac.Add(new CongTacItem
+                {
+                    HangMuc = "Hạng mục 1",
+                    CongViec = "Công việc 1",
+                    LyTrinh = "Từ A đến B",
+                    DonVi = "Đơn vị 1",
+                    KhoiLuong = 0,
+                    TienDo = 70
+                });
+            }
 
             RenderBangCongTac();
             RenderBangNghiemThu();
+            VeBieuDo();
+        }
+
+        // ===================================================
+        // QUẢN LÝ DATA THEO NGÀY
+        // ===================================================
+
+        /// <summary>Lấy data của ngày đã cho, nếu chưa có thì tạo mới và đăng ký vào lịch sử</summary>
+        private NhatKyThiCongData LayHoatTaoDataNgay(DateTime ngay)
+        {
+            var key = ngay.Date;
+            if (!_danhSachNgay.ContainsKey(key))
+            {
+                var nd = new NhatKyThiCongData { Ngay = key };
+                _danhSachNgay[key] = nd;
+
+                // Chỉ thêm vào lịch sử nếu chưa có
+                if (!LichSuNhatKy.TatCaNgay.Exists(x => x.Ngay.Date == key))
+                    LichSuNhatKy.TatCaNgay.Add(nd);
+            }
+            return _danhSachNgay[key];
+        }
+
+        private void NgayPicker_SelectedDateChanged(object sender,
+            System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (NgayPicker.SelectedDate == null) return;
+            DateTime ngayMoi = NgayPicker.SelectedDate.Value.Date;
+
+            // Lưu lại ngày hiện tại trước khi chuyển
+            if (_data != null)
+            {
+                _data.DuAn = DuAnTextBox.Text;
+                _data.DiaDiem = DiaDiemTextBox.Text;
+                _data.ThoiTietSang = ThoiTietSangTextBox.Text;
+                _data.ThoiTietChieu = ThoiTietChieuTextBox.Text;
+            }
+
+            // Chuyển sang data của ngày mới
+            _data = LayHoatTaoDataNgay(ngayMoi);
+            _congTacDangChon = null;
+
+            // Điền lại header từ data ngày mới
+            DuAnTextBox.Text = _data.DuAn;
+            DiaDiemTextBox.Text = _data.DiaDiem;
+            ThoiTietSangTextBox.Text = _data.ThoiTietSang;
+            ThoiTietChieuTextBox.Text = _data.ThoiTietChieu;
+
+            // Làm mới toàn bộ view
+            RenderBangCongTac();
+            RenderBangNghiemThu();
+            ChiTietCongTacPanel.Children.Clear();
+            ChiTietCongTacPanel.Children.Add(new System.Windows.Controls.TextBlock
+            {
+                Text = "← Chọn một công tác để xem chi tiết",
+                FontStyle = System.Windows.FontStyles.Italic,
+                Foreground = System.Windows.Media.Brushes.Gray,
+                TextWrapping = System.Windows.TextWrapping.Wrap,
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+                Margin = new System.Windows.Thickness(0, 30, 0, 0)
+            });
             VeBieuDo();
         }
 
@@ -99,6 +166,7 @@ namespace Trita.Views.NhatKyThiCong
             g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50) });
             g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(58) });
             g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50) });
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(28) }); // Nút xóa
 
             AddCell(g, 0, (idx + 1).ToString(), HorizontalAlignment.Center, true);
             AddEditCell(g, 1, ct.HangMuc, v => ct.HangMuc = v);
@@ -126,6 +194,37 @@ namespace Trita.Views.NhatKyThiCong
 
             AddCell(g, 7, ct.TongMay > 0 ? ct.TongMay + " máy" : "-", HorizontalAlignment.Center, false);
             AddCell(g, 8, ct.TongLoaiVatLieu > 0 ? ct.TongLoaiVatLieu + " loại" : "-", HorizontalAlignment.Center, false);
+
+            // Nút xóa dòng
+            var btnXoa = new Button
+            {
+                Content = "×",
+                Width = 20,
+                Height = 20,
+                Background = Brushes.Transparent,
+                BorderThickness = new Thickness(0),
+                Foreground = Brushes.Red,
+                FontWeight = FontWeights.Bold,
+                FontSize = 13,
+                Cursor = System.Windows.Input.Cursors.Hand,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                ToolTip = "Xóa công tác này"
+            };
+            btnXoa.Click += (s, e) =>
+            {
+                e.Handled = true;
+                if (_congTacDangChon == ct)
+                {
+                    _congTacDangChon = null;
+                    ChiTietCongTacPanel.Children.Clear();
+                }
+                _data.DanhSachCongTac.Remove(ct);
+                RenderBangCongTac();
+                VeBieuDo();
+            };
+            Grid.SetColumn(btnXoa, 9);
+            g.Children.Add(btnXoa);
 
             row.Child = g;
             return row;
@@ -206,17 +305,19 @@ namespace Trita.Views.NhatKyThiCong
 
             Grid g = new Grid();
             g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(36) });
-            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(100) });
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(85) });  // Ngày
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(90) });
             g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(80) });
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(75) });
             g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) });
 
             AddCell(g, 0, (idx + 1).ToString(), HorizontalAlignment.Center, true);
-            AddCell(g, 1, item.HangMuc, HorizontalAlignment.Left, false);
-            AddCell(g, 2, item.TenCongViec, HorizontalAlignment.Left, false);
-            AddCell(g, 3, item.LyTrinh, HorizontalAlignment.Left, false);
-            AddCell(g, 4, item.GioPhut.ToString(@"hh\:mm"), HorizontalAlignment.Center, false);
+            AddCell(g, 1, item.NgayHienThi, HorizontalAlignment.Center, false);
+            AddCell(g, 2, item.HangMuc, HorizontalAlignment.Left, false);
+            AddCell(g, 3, item.TenCongViec, HorizontalAlignment.Left, false);
+            AddCell(g, 4, item.LyTrinh, HorizontalAlignment.Left, false);
+            AddCell(g, 5, item.GioPhut.ToString(@"hh\:mm"), HorizontalAlignment.Center, false);
 
             // Nút xóa
             Button btnXoa = new Button
@@ -239,11 +340,18 @@ namespace Trita.Views.NhatKyThiCong
                 _data.DanhSachNghiemThu.Remove(item);
                 RenderBangNghiemThu();
             };
-            Grid.SetColumn(btnXoa, 5); g.Children.Add(btnXoa);
+            Grid.SetColumn(btnXoa, 6); g.Children.Add(btnXoa);
 
             row.Child = g;
             return row;
         }
+
+        /// <summary>
+        /// Trả về TẤT CẢ công tác từ mọi ngày đã khai báo (dùng cho bảng phân bổ).
+        /// Mỗi CongTacItem giữ nguyên thông tin VatLieuSuDung.Ngay đã được gán khi khai báo.
+        /// </summary>
+        public List<CongTacItem> GetDanhSachCongTac()
+            => LichSuNhatKy.LayTatCaCongTac();
 
         private void ThemNghiemThu_Click(object sender, RoutedEventArgs e)
         {
@@ -274,6 +382,7 @@ namespace Trita.Views.NhatKyThiCong
                 }
                 else
                 {
+                    popup.KetQua.Ngay = NgayPicker.SelectedDate ?? DateTime.Today;
                     _data.DanhSachNghiemThu.Add(popup.KetQua);
                 }
                 RenderBangNghiemThu();
@@ -393,7 +502,11 @@ namespace Trita.Views.NhatKyThiCong
 
         private void MoCuaSoVatLieu(CongTacItem ct)
         {
-            var popup = new VatLieuPopupWindow(NguonVatTu, ct.DanhSachVatLieu) { Owner = Window.GetWindow(this) };
+            var popup = new VatLieuPopupWindow(NguonVatTu, ct.DanhSachVatLieu)
+            {
+                Owner = Window.GetWindow(this),
+                NgayNhatKy = NgayPicker.SelectedDate ?? DateTime.Today
+            };
             if (popup.ShowDialog() == true) { ct.DanhSachVatLieu = popup.KetQua; RenderBangCongTac(); RenderChiTiet(); VeBieuDo(); }
         }
 

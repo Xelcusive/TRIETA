@@ -197,7 +197,9 @@ namespace Trita
             {
                 var bangPhanBoView = new Views.BangPhanBo.BangPhanBoVatTuView();
                 if (VatTuViewControl != null)
-                    bangPhanBoView.LoadDataFromVatTuView(VatTuViewControl.GetDanhSachVatTu());
+                    bangPhanBoView.LoadDataFromVatTuView(
+                        VatTuViewControl.GetDanhSachVatTu(),
+                        _nhatKyView?.GetDanhSachCongTac());
                 MainContent.Content = bangPhanBoView;
                 DauVaoVatTuCheckBox.IsChecked = false;
             }

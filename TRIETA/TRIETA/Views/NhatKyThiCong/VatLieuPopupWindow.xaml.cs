@@ -11,6 +11,9 @@ namespace Trita.Views.NhatKyThiCong
 {
     public partial class VatLieuPopupWindow : Window
     {
+        /// <summary>Ngày được set từ ngoài (NgayPicker của NhatKyThiCongView)</summary>
+        public DateTime NgayNhatKy { get; set; } = DateTime.Today;
+
         private List<VatTuItem> _nguonVatTu;
         public List<VatLieuSuDung> KetQua { get; private set; } = new List<VatLieuSuDung>();
 
@@ -191,6 +194,7 @@ namespace Trita.Views.NhatKyThiCong
         private void XacNhan_Click(object sender, RoutedEventArgs e)
         {
             KetQua = _danhSach.Where(d => !string.IsNullOrEmpty(d.TenVatLieu)).ToList();
+            foreach (var item in KetQua) item.Ngay = NgayNhatKy;
             DialogResult = true;
         }
 

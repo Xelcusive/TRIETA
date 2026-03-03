@@ -11,7 +11,7 @@ namespace Trita.Views.NhatKyThiCong
         public string LyTrinh { get; set; } = "";
         public string DonVi { get; set; } = "";
         public double KhoiLuong { get; set; } = 0;
-        public double TienDo { get; set; } = 0; // %
+        public double TienDo { get; set; } = 0;
 
         public List<VatLieuSuDung> DanhSachVatLieu { get; set; }
         public List<MayMocSuDung> DanhSachMayMoc { get; set; }
@@ -34,6 +34,9 @@ namespace Trita.Views.NhatKyThiCong
         public string TenVatLieu { get; set; } = "";
         public string DonVi { get; set; } = "";
         public double KhoiLuong { get; set; } = 0;
+        /// <summary>Ngày sử dụng — tự điền từ NgayPicker nhật ký thi công</summary>
+        public DateTime Ngay { get; set; } = DateTime.Today;
+        public string NgayHienThi => Ngay.ToString("dd/MM/yyyy");
     }
 
     public class MayMocSuDung
@@ -51,14 +54,19 @@ namespace Trita.Views.NhatKyThiCong
         public bool AnToanVeSinhMoiTruong { get; set; } = false;
     }
 
-    /// <summary>Công việc được nghiệm thu trong ngày</summary>
+    /// <summary>Công việc được nghiệm thu — có thêm cột Ngày lấy từ nhật ký</summary>
     public class NghiemThuItem
     {
         public string HangMuc { get; set; } = "";
         public string TenCongViec { get; set; } = "";
         public string LyTrinh { get; set; } = "";
-        /// <summary>Giờ phút nghiệm thu (chỉ dùng phần giờ/phút)</summary>
         public TimeSpan GioPhut { get; set; } = DateTime.Now.TimeOfDay;
+
+        /// <summary>Ngày nghiệm thu — tự động lấy từ NgayPicker của nhật ký thi công</summary>
+        public DateTime Ngay { get; set; } = DateTime.Today;
+
+        /// <summary>Hiển thị ngày dạng dd/MM/yyyy cho bảng</summary>
+        public string NgayHienThi => Ngay.ToString("dd/MM/yyyy");
     }
 
     public class NhatKyThiCongData
@@ -78,15 +86,10 @@ namespace Trita.Views.NhatKyThiCong
         }
     }
 
-    /// <summary>
-    /// Lưu lịch sử tất cả các ngày đã khai báo trong phiên làm việc.
-    /// Dùng để lọc dữ liệu cho popup nghiệm thu.
-    /// </summary>
     public static class LichSuNhatKy
     {
         public static List<NhatKyThiCongData> TatCaNgay { get; } = new List<NhatKyThiCongData>();
 
-        /// <summary>Lấy tất cả CongTacItem đã khai báo từ trước đến ngày hiện tại</summary>
         public static List<CongTacItem> LayTatCaCongTac(DateTime? truocNgay = null)
         {
             var result = new List<CongTacItem>();
